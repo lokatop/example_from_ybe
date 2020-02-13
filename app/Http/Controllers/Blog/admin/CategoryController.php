@@ -94,7 +94,7 @@ class CategoryController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  BlogCategoryUpdateRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -116,7 +116,7 @@ class CategoryController extends BaseController
         */
 
 
-        $item = BlogCategory::find($id);
+        $item = $this->blogCategoryRepository->getEdit($id);
         if (empty($item)){
             return back()
                 ->withErrors(['msg'=>"Запись id=[{$id}] не найдена"])
@@ -124,9 +124,14 @@ class CategoryController extends BaseController
         }
 
         $data = $request->all();
+        /*
+         *
+         * Ушло в observer
+
         if (empty($data['slug'])){
             $data['slug'] = Str::slug($data['title']);
         }
+        */
 
         $result = $item
             ->fill($data)
@@ -151,6 +156,6 @@ class CategoryController extends BaseController
      */
     public function destroy($id)
     {
-        dd(__METHOD__);
+        //dd(__METHOD__);
     }
 }

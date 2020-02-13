@@ -32,7 +32,7 @@ class BlogCategoryRepository extends CoreRepository
             ->startConditions()
             ->select($columns)
             ->paginate($perPage);
-        dd($result);
+        //dd($result);
         return $result;
     }
 

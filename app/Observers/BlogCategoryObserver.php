@@ -7,6 +7,14 @@ use App\Models\BlogCategory;
 class BlogCategoryObserver
 {
     /**
+     * ОБработка ПЕРЕД обновлением
+     * @param  BlogCategory  $blogCategory
+     */
+    public function creating(BlogCategory $blogCategory)
+    {
+        $this->setSlug($blogCategory);
+    }
+    /**
      * Handle the blog category "created" event.
      *
      * @param  \App\Models\BlogCategory  $blogCategory
@@ -16,7 +24,14 @@ class BlogCategoryObserver
     {
         //
     }
-
+    /**
+     * ОБработка ПЕРЕД обновлением
+     * @param  BlogCategory  $blogCategory
+     */
+    public function updating(BlogCategory $blogCategory)
+    {
+        $this->setSlug($blogCategory);
+    }
     /**
      * Handle the blog category "updated" event.
      *
@@ -59,5 +74,12 @@ class BlogCategoryObserver
     public function forceDeleted(BlogCategory $blogCategory)
     {
         //
+    }
+
+    protected function setSlug(BlogCategory $blogCategory)
+    {
+        if (empty($blogCategory->slug)){
+            $blogCategory->slug = \Str::slug($blogCategory->title);
+        }
     }
 }
