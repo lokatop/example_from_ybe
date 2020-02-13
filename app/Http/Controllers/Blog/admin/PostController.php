@@ -111,12 +111,15 @@ class PostController extends BaseController
 
         $data = $request->all();
 
+        /*
+         * Ушло в observer
         if (empty($data['slug'])){
             $data['slug'] = Str::slug($data['title']);
         }
         if (empty($item->published_at) && $data['is_published']){
             $data['published_at'] = Carbon::now();
         }
+        */
 
         $result= $item->update($data);
 
