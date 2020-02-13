@@ -16,7 +16,10 @@ class BlogPostObserver
      */
     public function creating(BlogPost $blogPost)
     {
-        //
+        $this->setPublishedAt($blogPost);
+        $this->setSlug($blogPost);
+        $this->setHtml($blogPost);
+        $this->setUser($blogPost);
     }
 
     /**
@@ -27,7 +30,6 @@ class BlogPostObserver
      */
     public function updating(BlogPost $blogPost)
     {
-        //
 //        $test[] = $blogPost->isDirty();// проверка на изменения, если изменилась, то true
 //        $test[] = $blogPost->isDirty('is_published');// проверка на изменения конкретного поля, то true
 //        $test[] = $blogPost->getAttribute('is_published');// для получения нынешнего значения, которое будет отправлено в БД
@@ -112,5 +114,21 @@ class BlogPostObserver
         if (empty($blogPost->slug)){
             $blogPost->slug = \Str::slug($blogPost->title);
         }
+    }
+
+    protected function setHtml(BlogPost $blogPost)
+    {
+        if ($blogPost ->isDirty('content_raw')){
+            $blogPost->content_html = $blogPost->content_raw;
+        }
+    }
+
+    //Если не указан user_id, то устанавливаем пользователя по умолчанию
+    /**
+     * @param BlogPost $blogPost
+    */
+    protected function setUser(BlogPost $blogPost)
+    {
+        $blogPost->user_id = auth()->id() ?? BlogPost::UNKNOWN_USER;
     }
 }
